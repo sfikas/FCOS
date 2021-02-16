@@ -34,7 +34,14 @@ def get_extensions():
 
     extension = CppExtension
 
-    extra_compile_args = {"cxx": []}
+    extra_compile_args = {
+            "cxx": [],
+            'nvcc':[
+                '--gpu-architecture=compute_70',
+                '--gpu-code=sm_70',
+        #        "-DCUDA_HOST_COMPILER=/usr/bin/gcc-5",
+            ]
+        }
     define_macros = []
 
     if (torch.cuda.is_available() and CUDA_HOME is not None) or os.getenv("FORCE_CUDA", "0") == "1":
@@ -46,6 +53,9 @@ def get_extensions():
             "-D__CUDA_NO_HALF_OPERATORS__",
             "-D__CUDA_NO_HALF_CONVERSIONS__",
             "-D__CUDA_NO_HALF2_OPERATORS__",
+            '--gpu-architecture=compute_70',
+            '--gpu-code=sm_70',
+        #    "-DCUDA_HOST_COMPILER=/usr/bin/gcc-5",
         ]
 
     include_dirs = [extensions_dir]
